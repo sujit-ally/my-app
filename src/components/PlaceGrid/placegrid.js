@@ -1,111 +1,103 @@
 import React, { Component } from "react";
-import {
-  Form,
-  Button,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-} from "react-bootstrap";
-const axios = require('axios');
 class PlaceGrid extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.state = {
       loaded: false,
       query: "war",
       movies: [],
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    console.log("Output", "componentdidmount");
-    // const movieAPI =
-    //   "https://www.omdbapi.com/?apikey=45f0782a&s=" + this.state.query;
-    // console.log(movieAPI);
-    // fetch(movieAPI)
-    //   .then((res) => res.json())
-    //   .then((fetchData) => {
-    //     this.setState({
-    //       movieAPI: fetchData["Search"],
-    //       loaded: true,
-    //     });
-    //     console.log(this.state.movieAPI);
-    //     return fetchData["Search"];
-    //   });
+    const movieAPI =
+      "https://www.omdbapi.com/?apikey=45f0782a&s=" + this.state.query;
+    fetch(movieAPI)
+      .then((res) => res.json())
+      .then((fetchData) => {
+        this.setState({
+          movies: fetchData["Search"],
+          loaded: true,
+        });
+        return fetchData["Search"];
+      });
   }
-
-  compomentDidUpdate() {
-    console.log("compomentDidUpdate");
-  }
-
-  MovieCard = (Title, Poster, Year) => {
-    return (
-        <div className="d-inline-block card">
-              <div className="details">
-                <h3 >{Title}</h3>
-              </div>
-              <div className="img">
-                <img src={Poster} />
-              </div>
-              <div className="details">
-                <h3 >{Year}</h3>
-              </div>
-            </div>
-    );
-  };
 
   handleChange(event) {
     this.setState({ query: event.target.value });
   }
 
   handleSubmit(event) {
-    console.log("handleSubmit", this.state.query);
     const movieAPI =
       "https://www.omdbapi.com/?apikey=45f0782a&s=" + this.state.query;
-    console.log(movieAPI);
 
     fetch(movieAPI)
       .then((res) => res.json())
       .then((fetchData) => {
         this.setState({
-          movieAPI: fetchData["Search"],
+          movies: fetchData["Search"],
           loaded: true,
         });
-        console.log(this.state.movieAPI);
         return fetchData["Search"];
       });
     event.preventDefault();
   }
 
+  searchComponent = () => {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          <input
+            type="text"
+            value={this.state.query}
+            onChange={this.handleChange}
+          />
+          <input type="Submit" />
+        </label>
+      </form>
+    );
+  };
+
+  moviesCompoment = () =>{
+    return (
+      this.state.movies.map(({ Title, Year, Poster }, index) => {
+        return this.MovieCard(Title, Poster, Year);
+      })
+    )
+  }
+
+  MovieCard = (Title, Poster, Year) => {
+    return (
+      <div className="card">
+        <div className="title" >
+          <h3>{Title}</h3>
+        </div>
+        <div className="img">
+          <img src={Poster} />
+        </div>
+      </div>
+    );
+  };
+
   render() {
     return (
       <div className="Movie-Section">
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Keyword:
-            <input
-              type="text"
-              value={this.state.query}
-              onChange={this.handleChange}
-            />
-          </label>
-          {/* <input type="submit" value="Submit" /> */}
-        </form>
+        {/* search section */}
+        <h1>Seach Movies with Keywords</h1>
+        {this.searchComponent()}
 
-        <h1>Search Result of {this.state.query}</h1>
-
+        {/* Display movie section */}
         <div className="Moview-Row">
-        {this.state.loaded ? (
-          this.state.movieAPI.map(({ Title, Year, Poster }) => {
-            return this.MovieCard(Title, Poster, Year);
-          })
-        ) : (
-          <h1>Data is not loaded</h1>
-        )}
-
+          {/* handle case of failure use cases */}
+          {this.state.loaded & (this.state.movies != null) ? (
+            this.moviesCompoment()
+          ) : (
+            <h4>No Data Found. Try Again with different KEYWORD</h4>
+          )}
         </div>
       </div>
     );

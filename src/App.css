@@ -46,6 +46,10 @@
   justify-content: center;
   overflow: scroll;
 }
+body{
+  background-color: #282c34;
+  color: white;
+}
 .product {
   width: 15%;
   min-width: 200px;
@@ -67,6 +71,7 @@
   text-align: left;
 }
 
+
 .main-preview {
   width: 100%;
   padding: 0;
@@ -75,54 +80,61 @@
 }
 
 .Movie-Section{
+  
   /* display: flex; */
-  width: 100%;
+  /* width: 100%; */
 }
 
 .movie-card{
+  /* margin-top: 100px; */
   /* width: 10%; */
-  display: flex;
+  /* display: inline-flex; */
+
 }
 
 .card{
   width: 100%;
-  margin: 20px;
+  margin: 10px;
 }
 
 .card a {
   text-decoration: none;
   color: #fff;
 }
-.card:hover {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-}
+
 .card .img img {
   width: 100%;
 }
-.card .details {
-  padding-left: 10px;
-  margin: 10px auto;
-}
-.card .details h3 {
-  text-align: left;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  color: rgb(27, 25, 25);
-}
-.card .details h4 {
-  margin-top: 10px;
-  text-align: left;
-  font-size: 12px;
-  color: rgb(110, 110, 110);
-}
-.card .details h5 {
-  margin-top: 10px;
-  text-align: left;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: #009688;
-}
+
+
 .Moview-Row{
-  display: flex;
+  display: inline;display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.card{
+  width: 300px;
+}
+.img{
+  height: 100%;
+  padding: 0%;
+}
+
+
+.card:hover {
+  opacity: 1;
+}
+.card .title {
+  height: 0;
+  opacity: 1;
+  transition-delay: 0s;
+  transition-duration: 0.4s;
+}
+.card:hover .title {
+  opacity: 1;
+  color: white;
+  transform: translateY(350px);
+  -webkit-transform: translateY(350px);
 }
